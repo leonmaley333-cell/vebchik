@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Retro Diamond</title>
+<link rel="stylesheet" href="retro.css">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+ 
+<canvas id="pixelCanvas"></canvas>
+ 
+<div class="container">
+ 
+  <div class="logo-placeholder">
+    <img src="images/100.png" alt="JSL Logo">
+  </div>
+ 
+  <h1>RETRO DIAMOND</h1>
+ 
+  <div id="countdown">Loading...</div>
+ 
+  <div id="releaseDate">
+    Release: 01-08-2026 00:00
+  </div>
+
+ <div class="extra-image">
+    <img src="images/telefonchik.png" alt="Retro Diamond Console">
+  </div>
+ 
+
+  <div class="buttons">
+    <button class="tab-button" onclick="showTab('release')">Beschikbaarheid</button>
+    <button class="tab-button" onclick="showTab('buttons')">Unieke Knoppen</button>
+    <button class="tab-button" onclick="showTab('games')">Games</button>
+  </div>
+ 
+  <div class="tab-content" id="release">
+    <p>
+      De Retro Diamond zal beschikbaar zijn in augustus 2026 en te koop zijn via <strong><a href="https://www.temu.com/" target="_blank" class="button">Temu</a>,<a href="https://www.amazon.com/" target="_blank" class="button">Amazon</a> en <a href="https://www.bol.com/" target="_blank" class="button">Bol.com</a></strong>.
+      Naast de reguliere verkoop zullen er speciale limited editions beschikbaar zijn met unieke designs en kleuren.
+      Zorg dat je op tijd bent om jouw exemplaar te bemachtigen!
+    </p>
+    <p>
+      De console is ideaal voor zowel retro-liefhebbers als nieuwe gamers die de charme van klassieke spellen willen ervaren.
+      Met compatibiliteit voor meerdere platformen, brengt het een wereld van entertainment naar je woonkamer.
+    </p>
+  </div>
+ 
+  <div class="tab-content" id="buttons" style="display:none;">
+    <p>
+      Onze console heeft een <strong>uniek knoppenpatroon</strong> dat perfect is voor retro-gaming.
+      De knoppen zijn zorgvuldig geplaatst om comfortabel te gamen voor urenlange sessies, met een authentiek gevoel dat je doet denken aan de klassieke controllers.
+    </p>
+    <p>
+      Elke knop heeft een lichte click-feedback en een duurzame afwerking, waardoor de ervaring zowel plezierig als betrouwbaar is.
+      Speciaal ontworpen om arcade-achtige sensaties te bieden voor zowel casual als hardcore gamers.
+    </p>
+    <p>
+      Bovendien kun je de knoppen personaliseren met verschillende kleuren of verlichte opties, zodat jouw Retro Diamond echt uniek wordt.
+    </p>
+  </div>
+ 
+  <div class="tab-content" id="games" style="display:none;">
+    <p>
+      Speel klassieke <a href="https://www.nintendo.com/nl-nl/Games/Games-347085.html" target="_blank" class="button">Nintendo</a>- en <a href="https://www.sega.com/games/all" target="_blank" class="button">Sega</a>-games of ontdek nieuwe spellen die speciaal voor de Retro Diamond zijn gemaakt.
+      De console ondersteunt honderden retrotitels die perfect geoptimaliseerd zijn voor pixel-perfect graphics en authentieke geluidseffecten.
+    </p>
+    <p>
+      Naast klassieke titels kun je genieten van exclusieve games die nergens anders verkrijgbaar zijn.
+      Van puzzelspellen tot snelle actiespellen – er is voor elk wat wils. Multiplayer-opties zorgen dat je samen met vrienden kunt genieten.
+    </p>
+    <p>
+      De Retro Diamond brengt niet alleen nostalgie terug, maar biedt ook een moderne gaming-ervaring met gemakkelijke updates en uitbreidingen.
+    </p>
+  </div>
+
+<script>
+const targetDate = new Date("2026-08-01T00:00:00").getTime();
+ 
+function updateCountdown(){
+  const now = new Date().getTime();
+  const distance = targetDate - now;
+ 
+  const days = Math.floor(distance / (1000*60*60*24));
+  const hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
+  const minutes = Math.floor((distance % (1000*60*60))/(1000*60));
+  const seconds = Math.floor((distance % (1000*60))/1000);
+ 
+  document.getElementById("countdown").innerHTML =
+  days + "D " + hours + "U " + minutes + "M " + seconds + "S";
+}
+ 
+setInterval(updateCountdown,1000);
+ 
+function showTab(tabId){
+  const tabs = document.querySelectorAll('.tab-content');
+  tabs.forEach(t => t.style.display = 'none');
+  document.getElementById(tabId).style.display = 'block';
+}
+ 
+const canvas = document.getElementById("pixelCanvas");
+const ctx = canvas.getContext("2d");
+ 
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+ 
+const pixels = [];
+const colors = ["#ff2d55","#00ffcc","#ffb400","#8b5cff","#00d4ff","#ff6b00","#5eff33"];
+for(let i=0;i<200;i++){
+  pixels.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    size: Math.random()*10+5,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    dx: (Math.random()-0.5)*1,
+    dy: (Math.random()-0.5)*1
+  });
+}
+ 
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pixels.forEach(p => {
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x,p.y,p.size,p.size);
+ 
+    p.x += p.dx;
+    p.y += p.dy;
+ 
+    if(p.x<0||p.x>canvas.width) p.dx*=-1;
+    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+ 
+</body>
+</html>
